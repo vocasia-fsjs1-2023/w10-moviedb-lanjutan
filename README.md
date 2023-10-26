@@ -63,7 +63,7 @@ Pada requirement ini kalian diminta untuk melakukan migrasi database movie app m
 
 - Kalian diminta untuk membuat seeder sejumlah 5 data movie menggunakan sequelize-cli.
 - Kalian diminta untuk membuat seeder untuk 1 user dengan value property isAdmin true.
-
+ 
 reference: https://sequelize.org/docs/v6/other-topics/migrations/
 
 ### 6. Sequelize hooks n validation
