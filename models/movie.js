@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       type:DataTypes.TEXT,
       validate:{
         notEmpty: {
-          msg: "Title tidak boleh kosong atau null dan harus memiliki panjang min 1 dan max 255 karakter."
+          msg: "Description tidak boleh kosong atau null."
         }
       }
     },
