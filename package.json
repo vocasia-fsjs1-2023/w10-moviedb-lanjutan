@@ -1,0 +1,30 @@
+{
+  "name": "w10-moviedb-lanjutan",
+  "version": "1.0.0",
+  "description": "Pada Tugas ini, kalian diminta untuk membuat server backend baru, dengan migration dilakukan secara manual menggunakan sequelize-cli dengan mengikuti arahan dari API-doc",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vocasia-fsjs1-2023/w10-moviedb-lanjutan.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vocasia-fsjs1-2023/w10-moviedb-lanjutan/issues"
+  },
+  "homepage": "https://github.com/vocasia-fsjs1-2023/w10-moviedb-lanjutan#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "movie": "^1.0.1",
+    "mysql2": "^3.6.2",
+    "sequelize": "^6.33.0",
+    "sequelize-cli": "^6.6.1"
+  }
+}
