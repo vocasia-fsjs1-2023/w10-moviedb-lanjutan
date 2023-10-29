@@ -96,7 +96,7 @@ get all movie list
 
 Response:
 
-- status: 200
+  - status: 200
 - body:
 
 ```json
