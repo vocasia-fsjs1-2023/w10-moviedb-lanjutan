@@ -1,74 +1,83 @@
-const { Review, Movie } = require("../models");
-const movie = require("../models/movie");
+const { Movie, Review, User } = require("../models");
 
 class Controller {
+  static async Postreview(req, res, next) {
+    const { title, description, rating, movieId } = req.body;
+    const userId = req.userId;
 
-    static async getAllReviews(req, res) {
-        try {
-          const reviews = await Review.findAll({
-            include: Movie,
-          });
-          res.json(reviews);
-        } catch (error) {
-          res.status(500).json({ error: "Gagal mendapatkan ulasan" });
-        }
-      };
+    try {
+      const user = await User.findOne({ where: { id: userId } });
+      if (!user) {
+        return res.status(401).json({ message: "User tidak terauthentikasi" });
+      }
 
-    static Postreview(req, res) {
-        const body = req.body;
-        const { title,description,rating,movieId } = body;
-
-        Review.create({
-            title,
-            description,
-            rating,
-            movieId,
-        }).then((review) => {
-            res.status(201).json(review);
-        }).catch((error) => {
-            res.status(500).json(error);
-        });
+      const review = await Review.create({
+        title,
+        description,
+        rating,
+        movieId,
+        userId,
+      });
+      res.status(201).json(review);
+    } catch (error) {
+      res.status(500).json(error);
     }
+  }
 
-    static async Putreview(req, res) {
-        const { title, description,rating } = req.body;
-        const reviewId = req.params.id;
-
-        try {
-            const reviewToUpdate = await Review.findByPk(reviewId);
-
-            if (!reviewToUpdate) {
-                return res.status(404).json({ error: "Movie not found" });
-            }
-
-            reviewToUpdate.title = title;
-            reviewToUpdate.description = description;
-            reviewToUpdate.rating = rating;
-
-            await reviewToUpdate.save();
-
-            return res.status(200).json(reviewToUpdate);
-        } catch (error) {
-            return res.status(500).json({ error: "Internal Server Error" });
-        }
+  static async getAllReviews(req, res, next) {
+    try {
+      const reviews = await Review.findAll({ include: Movie });
+      res.status(200).json({ reviews });
+    } catch (error) {
+      res.status(500).json(error);
     }
+  }
 
-    static async Deletereview(req, res) {
-        const id = Number(req.params.id);
+  static async Putreview(req, res, next) {
+    const { title, description, rating } = req.body;
+    const reviewId = req.params.id;
 
-        const review = await Review.findByPk(id);
-        if (!review) {
-            return res.status(404).json({ error: "Review not found" });
-        }
+    try {
+      const review = await Review.findOne({ where: { id: reviewId } });
+      if (!review) {
+        return res.status(404).json({ message: "Review tidak ditemukan" });
+      }
 
-        await Review.destroy({
-            where: {
-                id: id
-            }
-        });
+      if (review.userId !== req.userId) {
+        return res.status(403).json({ message: "User tidak punya akses data ini" });
+      }
 
-        res.status(200).json({ message: `review ${review.id} telah dihapus` });
+      await review.update({
+        title,
+        description,
+        rating,
+      });
+
+      res.status(200).json(review);
+    } catch (error) {
+      res.status(500).json(error);
     }
+  }
 
+  static async Deletereview(req, res, next) {
+    const reviewId = req.params.id;
+
+    try {
+      const review = await Review.findOne({ where: { id: reviewId } });
+      if (!review) {
+        return res.status(404).json({ message: "Review tidak ditemukan" });
+      }
+
+      if (review.userId !== req.userId) {
+        return res.status(403).json({ message: "User tidak punya akses data ini" });
+      }
+
+      await review.destroy();
+      res.status(200).json({ message: `Review dengan id ${reviewId} berhasil dihapus` });
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  }
 }
+
 module.exports = Controller;

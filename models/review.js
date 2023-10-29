@@ -15,15 +15,48 @@ module.exports = (sequelize, DataTypes) => {
       Review.belongsTo(models.User);
     }
   }
-  Review.init({
-    title: DataTypes.STRING,
-    description: DataTypes.TEXT,
-    rating: DataTypes.INTEGER,
-    movieId: DataTypes.INTEGER,
-    userId: DataTypes.INTEGER
-  }, {
-    sequelize,
-    modelName: 'Review',
-  });
+  Review.init(
+    {
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          len: [1, 255],
+        },
+      },
+      description: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+      rating: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          min: 1,
+          max: 5,
+        },
+      },
+      movieId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Movies",
+          key: "id",
+        },
+      },
+      userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Users",
+          key: "id",
+        },
+      },
+    },
+    {
+      sequelize,
+      modelName: "Review",
+    }
+  );
   return Review;
 };

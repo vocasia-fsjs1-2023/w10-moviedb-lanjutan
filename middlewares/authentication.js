@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const secret = "rahasia";
+const secret = "rahasiabanget";
 
 async function authentication(req, res, next) {
   try {
@@ -7,6 +7,8 @@ async function authentication(req, res, next) {
     const bearer = header.authorization;
     const token = bearer.slice(7);
     const decoded = jwt.verify(token, secret);
+
+    console.log("Token:", token);
 
     req.userId = decoded.id;
     req.email = decoded.email;

@@ -5,8 +5,8 @@ const errorHandling = require('../../middlewares/errorHandling');
 const authorization = require('../../middlewares/authorization');
 
 
-router.get('/', authentication, reviewController.getAllReviews);
-router.post('/', authentication, authorization, reviewController.Postreview);
+router.get('/', reviewController.getAllReviews);
+router.post('/', authentication, reviewController.Postreview);
 router.put('/:id', authentication, authorization, reviewController.Putreview);
 router.delete('/:id', authentication, authorization, reviewController.Deletereview);
 
