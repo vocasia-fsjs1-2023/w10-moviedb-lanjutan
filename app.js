@@ -1,20 +1,29 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const errorHandling = require('./middleware/errorHandling');
-const routes = require('./routes/index');
+const express = require("express");
+const bodyParser = require("body-parser"); 
+const routers = require("./routers/index");
+const errorHandling = require("./middlewares/errorHandling");
+
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(
+  bodyParser.urlencoded({
+    limit: "50mb",
+    extended: true,
+    parameterLimit: 50000,
+  })
+);
 
-app.get('/', (req, res) => {
-    res.send('Hello, World!');
+const port = process.env.PORT || 3000;
+
+app.get("/", (req, res) => {
+  res.send("<h1>Hello World!</h1>");
 });
 
+app.use(routers);
 app.use(errorHandling);
-app.use(routes);
 
-const PORT = 3000;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+app.listen(port, () => {
+  console.log(`Server listening on http://localhost:${port}...`);
 });

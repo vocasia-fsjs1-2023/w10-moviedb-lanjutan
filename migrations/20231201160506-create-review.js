@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('reviews', {
+    await queryInterface.createTable('Reviews', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -10,33 +10,36 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       title: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       description: {
+        allowNull: false,
         type: Sequelize.TEXT
       },
       rating: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
       movieId: {
+        allowNull: false,
         type: Sequelize.INTEGER,
-        allowNull: false, 
         references: {
-          model: 'movies', 
-          key: 'id' 
+          model: "Movies",
+          key: "id",
         },
-        onUpdate: 'CASCADE', 
-        onDelete: 'CASCADE'
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
       userId: {
-        type: Sequelize.INTEGER,
         allowNull: false,
+        type: Sequelize.INTEGER,
         references: {
-          model: 'users', 
-          key: 'id' 
+          model: "Users",
+          key: "id",
         },
-        onUpdate: 'CASCADE', 
-        onDelete: 'CASCADE'
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
       createdAt: {
         allowNull: false,
@@ -49,6 +52,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('reviews');
+    await queryInterface.dropTable('Reviews');
   }
 };

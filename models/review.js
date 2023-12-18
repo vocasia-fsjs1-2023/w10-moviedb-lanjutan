@@ -1,39 +1,27 @@
 'use strict';
-const { DataTypes } = require('sequelize');
-
-module.exports = (sequelize) => {
-  const Review = sequelize.define('Review', {
-    title: {
-      type: DataTypes.STRING,
-      validate: {
-        len: [0, 255],
-      },
-    },
-    description: {
-      type: DataTypes.TEXT,
-    },
-    rating: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        min: 0,
-        max: 5,
-      },
-    },
-    movieId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    userId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
+const {
+  Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class Review extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+    }
+  }
+  Review.init({
+    title: DataTypes.STRING,
+    description: DataTypes.TEXT,
+    rating: DataTypes.INTEGER,
+    movieId: DataTypes.INTEGER,
+    userId: DataTypes.INTEGER
+  }, {
+    sequelize,
+    modelName: 'Review',
   });
-
-  Review.associate = (models) => {
-    Review.belongsTo(models.Movie, { foreignKey: 'movieId', as: 'movie' });
-    Review.belongsTo(models.User, { foreignKey: 'userId', as: 'user' });
-  };
-
   return Review;
 };
